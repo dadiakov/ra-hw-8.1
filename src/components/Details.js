@@ -6,15 +6,21 @@ export default function Details({ info }) {
     const [isLoading, setLoading] = useState(false);
     useEffect(() => {
         if (!info.id) return;
-        setLoading(true);
         const fetchData = async () => {
+          setLoading(true);
+          try {
             const json = await fetch(
               `https://raw.githubusercontent.com/netology-code/ra16-homeworks/master/hooks-context/use-effect/data/${info.id}.json`
             );
             const parsedItems = await json.json();
             setData(parsedItems);
             setLoading(false);
-          };
+          } catch (error) {
+            console.log(error)
+          } finally {
+            setLoading(false);
+          }      
+        };
         fetchData();
 
     }, [info.id]);
